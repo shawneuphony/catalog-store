@@ -1,5 +1,9 @@
-import PageTemplate, { generateMetadata } from './[slug]/page'
+import Hero from "@/components/sections/Hero";
 
-export default PageTemplate
-
-export { generateMetadata }
+export default function HomePage() {
+  return (
+    <main>
+      <Hero />
+    </main>
+  );
+}
