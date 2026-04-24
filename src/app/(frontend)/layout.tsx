@@ -3,6 +3,8 @@ import { Playfair_Display, DM_Sans } from 'next/font/google'
 import React from 'react'
 import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
+import  ImageCarousel from '@/components/ImageCarousel'
+import ContactPage from './contact/page'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
@@ -10,6 +12,8 @@ import { draftMode } from 'next/headers'
 import Navbar from '@/components/layout/Navbar'
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
+import AboutPage from './about/page'
+import ShopPage from './shop/page'
 
 const display = Playfair_Display({
   subsets: ['latin'],
@@ -25,6 +29,7 @@ const body = DM_Sans({
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
+
   return (
     <html className={`${display.variable} ${body.variable}`} lang="en" suppressHydrationWarning>
       <head>
@@ -37,6 +42,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <AdminBar adminBarProps={{ preview: isEnabled }} />
           <Navbar />
           {children}
+          <AboutPage />
+          <ShopPage />
+          <ContactPage />
           <Footer />
         </Providers>
       </body>

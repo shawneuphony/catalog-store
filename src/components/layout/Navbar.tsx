@@ -4,17 +4,16 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Menu, X, ShoppingBag } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 const NAV_LINKS = [
-  { label: "Shop",       href: "/shop" },
-  { label: "Categories", href: "/categories" },
-  { label: "About",      href: "/about" },
-  { label: "Journal",    href: "/journal" },
-  { label: "Contact",    href: "/contact" },
+  { label: "Shop", href: "/shop" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export default function Navbar() {
-  const [open, setOpen]       = useState(false);
+  const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -22,6 +21,13 @@ export default function Navbar() {
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Text color: white when NOT scrolled (hero), dark when scrolled
+  const linkColor = scrolled ? "text-slate-700 hover:text-brand-600" : "text-white hover:text-white/80";
+  const buttonClasses = scrolled
+    ? "bg-brand-600 hover:bg-brand-700 text-white"
+    : "bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border border-white/30";
+  const iconColor = scrolled ? "text-slate-700" : "text-white";
 
   return (
     <header
@@ -33,16 +39,17 @@ export default function Navbar() {
       )}
     >
       <nav className="max-w-7xl mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
-
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
-          <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-accent flex items-center justify-center text-white font-display font-bold text-sm shadow-md group-hover:scale-105 transition-transform">
-            S
-          </span>
-          <span className="font-display font-semibold text-slate-800 text-lg tracking-tight">
-            Storefront
-          </span>
-        </Link>
+        <Link href="/" className="flex items-center">
+  <Image
+    src="/logo.png"
+    alt="Storefront Logo"
+    width={612}
+    height={408}
+    className="h-auto w-auto max-h-32"   // or simply remove className entirely
+    priority
+  />
+</Link>
 
         {/* Desktop links */}
         <ul className="hidden md:flex items-center gap-8">
@@ -50,7 +57,7 @@ export default function Navbar() {
             <li key={link.href}>
               <Link
                 href={link.href}
-                className="text-sm font-body text-slate-600 hover:text-brand-600 transition-colors relative after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-brand-500 hover:after:w-full after:transition-all"
+                className={cn("text-sm font-body transition-colors", linkColor)}
               >
                 {link.label}
               </Link>
@@ -62,14 +69,17 @@ export default function Navbar() {
         <div className="flex items-center gap-3">
           <Link
             href="/shop"
-            className="hidden md:inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-body font-medium px-5 py-2 rounded-full shadow-sm hover:shadow-md transition-all"
+            className={cn(
+              "hidden md:inline-flex items-center gap-2 text-sm font-body font-medium px-5 py-2 rounded-full shadow-sm transition-all",
+              buttonClasses
+            )}
           >
             <ShoppingBag size={15} />
             Shop Now
           </Link>
 
           <button
-            className="md:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100"
+            className={cn("md:hidden p-2 rounded-lg transition-colors", iconColor, "hover:bg-white/10")}
             onClick={() => setOpen(!open)}
             aria-label="Toggle menu"
           >
@@ -78,7 +88,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile drawer */}
+      {/* Mobile drawer – always dark text on white background */}
       {open && (
         <div className="md:hidden bg-white border-t border-slate-100 px-6 py-4 space-y-4 shadow-lg">
           {NAV_LINKS.map((link) => (

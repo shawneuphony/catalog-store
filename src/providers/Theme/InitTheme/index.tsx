@@ -1,50 +1,39 @@
-import Script from 'next/script'
-import React from 'react'
+'use client';
 
-import { defaultTheme, themeLocalStorageKey } from '../ThemeSelector/types'
+import { useServerInsertedHTML } from 'next/navigation';
 
-export const InitTheme: React.FC = () => {
-  return (
-    // eslint-disable-next-line @next/next/no-before-interactive-script-outside-document
-    <Script
-      dangerouslySetInnerHTML={{
-        __html: `
-  (function () {
-    function getImplicitPreference() {
-      var mediaQuery = '(prefers-color-scheme: dark)'
-      var mql = window.matchMedia(mediaQuery)
-      var hasImplicitPreference = typeof mql.matches === 'boolean'
+export function InitTheme() {
+  useServerInsertedHTML(() => {
+    const themeScript = `
+      (function() {
+        function getImplicitPreference() {
+          var mediaQuery = '(prefers-color-scheme: dark)';
+          var mql = window.matchMedia(mediaQuery);
+          var hasImplicitPreference = typeof mql.matches === 'boolean';
+          if (hasImplicitPreference) {
+            return mql.matches ? 'dark' : 'light';
+          }
+          return null;
+        }
 
-      if (hasImplicitPreference) {
-        return mql.matches ? 'dark' : 'light'
-      }
+        var themeToSet = 'light';
+        var preference = window.localStorage.getItem('payload-theme');
 
-      return null
-    }
+        if (preference === 'dark' || preference === 'light') {
+          themeToSet = preference;
+        } else {
+          var implicitPreference = getImplicitPreference();
+          if (implicitPreference) {
+            themeToSet = implicitPreference;
+          }
+        }
 
-    function themeIsValid(theme) {
-      return theme === 'light' || theme === 'dark'
-    }
+        document.documentElement.setAttribute('data-theme', themeToSet);
+      })();
+    `;
 
-    var themeToSet = '${defaultTheme}'
-    var preference = window.localStorage.getItem('${themeLocalStorageKey}')
+    return <script dangerouslySetInnerHTML={{ __html: themeScript }} />;
+  });
 
-    if (themeIsValid(preference)) {
-      themeToSet = preference
-    } else {
-      var implicitPreference = getImplicitPreference()
-
-      if (implicitPreference) {
-        themeToSet = implicitPreference
-      }
-    }
-
-    document.documentElement.setAttribute('data-theme', themeToSet)
-  })();
-  `,
-      }}
-      id="theme-script"
-      strategy="beforeInteractive"
-    />
-  )
+  return null;
 }
