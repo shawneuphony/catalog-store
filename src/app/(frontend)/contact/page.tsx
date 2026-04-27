@@ -63,16 +63,13 @@ export default function ContactPage() {
   };
 
   return (
-    <main className="min-h-screen bg-yellow-100 py-16">
+    <main className="min-h-screen bg-white py-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Page Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h1 className="font-display text-4xl md:text-5xl font-bold text-slate-900 mb-4">
             Get in Touch
           </h1>
-          <p className="font-body text-lg text-slate-600">
-            We'd love to hear from you. Send us a message and we'll respond as soon as possible.
-          </p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">

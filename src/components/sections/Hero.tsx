@@ -16,7 +16,7 @@ export default function Hero() {
     aria-hidden="true"
   />
   {/* Optional dark overlay */}
-  <div className="absolute inset-0 bg-black/50" aria-hidden="true" />
+  <div className="absolute inset-0 bg-black/30" aria-hidden="true" />
 
   {/* Content (keeps the same structure) */}
   <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 pt-28 pb-20 grid lg:grid-cols-2 gap-16 items-center">

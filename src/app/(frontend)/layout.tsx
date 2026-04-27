@@ -42,8 +42,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <AdminBar adminBarProps={{ preview: isEnabled }} />
           <Navbar />
           {children}
-          <AboutPage />
           <ShopPage />
+          <AboutPage />
           <ContactPage />
           <Footer />
         </Providers>
